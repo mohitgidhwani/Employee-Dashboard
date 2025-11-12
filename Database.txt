@@ -1,0 +1,373 @@
+USE [master]
+GO
+/****** Object:  Database [EmployeeManagement]    Script Date: 12-11-2025 18:29:45 ******/
+CREATE DATABASE [EmployeeManagement]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'EmployeeManagement', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\DATA\EmployeeManagement.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'EmployeeManagement_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\DATA\EmployeeManagement_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT, LEDGER = OFF
+GO
+ALTER DATABASE [EmployeeManagement] SET COMPATIBILITY_LEVEL = 160
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [EmployeeManagement].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [EmployeeManagement] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [EmployeeManagement] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [EmployeeManagement] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [EmployeeManagement] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [EmployeeManagement] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [EmployeeManagement] SET AUTO_CLOSE ON 
+GO
+ALTER DATABASE [EmployeeManagement] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [EmployeeManagement] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [EmployeeManagement] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [EmployeeManagement] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [EmployeeManagement] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [EmployeeManagement] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [EmployeeManagement] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [EmployeeManagement] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [EmployeeManagement] SET  ENABLE_BROKER 
+GO
+ALTER DATABASE [EmployeeManagement] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [EmployeeManagement] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [EmployeeManagement] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [EmployeeManagement] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [EmployeeManagement] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [EmployeeManagement] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [EmployeeManagement] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [EmployeeManagement] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [EmployeeManagement] SET  MULTI_USER 
+GO
+ALTER DATABASE [EmployeeManagement] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [EmployeeManagement] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [EmployeeManagement] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [EmployeeManagement] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [EmployeeManagement] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [EmployeeManagement] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+ALTER DATABASE [EmployeeManagement] SET QUERY_STORE = ON
+GO
+ALTER DATABASE [EmployeeManagement] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
+GO
+USE [EmployeeManagement]
+GO
+/****** Object:  Table [dbo].[EmploayeeAuth]    Script Date: 12-11-2025 18:29:46 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[EmploayeeAuth](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[AuthName] [varchar](100) NULL,
+	[AuthRole] [varchar](50) NULL,
+	[PasswordHash] [varchar](max) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[EmployeeData]    Script Date: 12-11-2025 18:29:46 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[EmployeeData](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[EmpName] [varchar](100) NULL,
+	[EmpAge] [int] NULL,
+	[EmpGender] [varchar](50) NULL,
+	[EmpSalary] [decimal](18, 0) NULL,
+	[EmpCountry] [varchar](50) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[EmployeeLogs]    Script Date: 12-11-2025 18:29:46 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[EmployeeLogs](
+	[logId] [int] IDENTITY(1,1) NOT NULL,
+	[id] [int] NULL,
+	[EmpName] [varchar](100) NULL,
+	[EmpAge] [int] NULL,
+	[EmpGender] [varchar](50) NULL,
+	[EmpSalary] [decimal](18, 0) NULL,
+	[EmpCountry] [varchar](50) NULL,
+	[ActionType] [varchar](10) NULL,
+	[ChangeDate] [datetime] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[logId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[EmployeeLogs] ADD  DEFAULT (getdate()) FOR [ChangeDate]
+GO
+/****** Object:  StoredProcedure [dbo].[AuthLogin_Sp]    Script Date: 12-11-2025 18:29:46 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[AuthLogin_Sp]
+@AuthName VARCHAR ( 100 ) 
+AS
+BEGIN
+  SELECT * FROM EmploayeeAuth
+   WHERE AuthName = @AuthName
+END
+GO
+/****** Object:  StoredProcedure [dbo].[AuthRegister_Sp]    Script Date: 12-11-2025 18:29:46 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[AuthRegister_Sp]
+@AuthName VARCHAR ( 100 ) ,
+@AuthRole VARCHAR ( 50 ) , 
+@PasswordHash VARCHAR (MAX)
+AS
+BEGIN
+   INSERT INTO EmploayeeAuth ( AuthName , AuthRole , PasswordHash )
+	 VALUES 
+	( @AuthName , @AuthRole , @PasswordHash )
+END
+GO
+/****** Object:  StoredProcedure [dbo].[EmploayeeAuth_SP]    Script Date: 12-11-2025 18:29:46 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[EmploayeeAuth_SP]
+  @ACTION  VARCHAR ( 50 ),
+  @id INT,
+  @AuthName VARCHAR ( 100 ) ,
+  @AuthRole VARCHAR ( 50 ) , 
+  @PasswordHash VARCHAR (MAX)
+  AS
+
+  BEGIN
+    IF( @ACTION = 'REGISTER' )
+	BEGIN
+	 INSERT INTO EmploayeeAuth ( AuthName , AuthRole , PasswordHash )
+	 VALUES 
+	 ( @AuthName , @AuthRole , @PasswordHash )
+	END
+
+	ELSE IF( @ACTION = 'LOGIN' )
+	BEGIN
+	 SELECT * FROM EmploayeeAuth
+	 WHERE AuthName = @AuthName
+	END
+  END
+GO
+/****** Object:  StoredProcedure [dbo].[Employee_DeleteSp]    Script Date: 12-11-2025 18:29:46 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Employee_DeleteSp]
+@id int
+AS
+BEGIN
+
+ SET NOCOUNT ON; 
+ 
+  DELETE EmployeeData
+  WHERE id = @id
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Employee_GetAllSp]    Script Date: 12-11-2025 18:29:46 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Employee_GetAllSp]
+AS
+BEGIN
+
+ SET NOCOUNT ON; 
+ 
+   SELECT  id ,
+  EmpName ,
+  EmpAge  ,
+  EmpGender ,
+  EmpSalary ,
+  EmpCountry 
+  FROM EmployeeData
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Employee_GetByIdSp]    Script Date: 12-11-2025 18:29:46 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Employee_GetByIdSp]
+@id int
+AS
+BEGIN
+
+ SET NOCOUNT ON; 
+ 
+   SELECT  id ,
+  EmpName ,
+  EmpAge  ,
+  EmpGender ,
+  EmpSalary ,
+  EmpCountry 
+  FROM EmployeeData
+  WHERE id = @id
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Employee_InsertSp]    Script Date: 12-11-2025 18:29:46 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Employee_InsertSp]
+@id INT ,
+@EmpName VARCHAR (100),
+ @EmpAge INT ,
+ @EmpGender VARCHAR (50),
+ @EmpSalary DECIMAL,
+ @EmpCountry VARCHAR (50)
+AS
+BEGIN
+
+ SET NOCOUNT ON; 
+  
+   IF EXISTS (SELECT 1 FROM EmployeeData WHERE id = @id)
+   BEGIN
+      UPDATE EmployeeData
+	  SET EmpName = @EmpName,
+	      EmpAge = @EmpAge,
+		  EmpGender = @EmpGender,
+		  EmpSalary = @EmpSalary ,
+		  EmpCountry = @EmpCountry
+	WHERE id = @id
+   END
+
+ELSE
+	BEGIN
+	   INSERT INTO EmployeeData ( EmpName ,  EmpAge , EmpGender ,  EmpSalary ,  EmpCountry)
+	   VALUES
+      ( @EmpName , @EmpAge , @EmpGender , @EmpSalary , @EmpCountry )
+    END
+END
+GO
+/****** Object:  StoredProcedure [dbo].[EmployeeData_SP]    Script Date: 12-11-2025 18:29:46 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[EmployeeData_SP]
+ @ACTION VARCHAR(50),
+ @id INT,
+ @EmpName VARCHAR (100),
+ @EmpAge INT ,
+ @EmpGender VARCHAR (50),
+ @EmpSalary DECIMAL,
+ @EmpCountry VARCHAR (50)
+AS
+BEGIN
+   
+   IF( @ACTION = 'GETALL')
+   BEGIN
+    SELECT * FROM EmployeeData
+   END 
+
+   ELSE IF( @ACTION = 'GETBYID' )
+   BEGIN
+    SELECT * FROM EmployeeData
+	WHERE id = @id
+   END
+
+   ELSE IF ( @ACTION = 'INSERT' )
+   BEGIN
+    INSERT INTO EmployeeData ( EmpName ,  EmpAge , EmpGender ,  EmpSalary ,  EmpCountry)
+	VALUES
+	( @EmpName , @EmpAge , @EmpGender , @EmpSalary , @EmpCountry )
+   END
+
+
+   ELSE IF ( @ACTION = 'UPDATE' )
+   BEGIN
+     UPDATE EmployeeData
+	 SET EmpName = @EmpName,
+	     EmpAge = @EmpAge,
+		 EmpGender = @EmpGender ,
+		 EmpSalary = @EmpSalary,
+		 EmpCountry = @EmpCountry
+     WHERE id = @id
+   END
+
+
+   ELSE IF ( @ACTION = 'DELETE' )
+   BEGIN
+     DELETE EmployeeData
+	 WHERE id = @id
+   END
+END
+GO
+/****** Object:  StoredProcedure [dbo].[EmployeeLogs_SP]    Script Date: 12-11-2025 18:29:46 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[EmployeeLogs_SP]
+@ACTION VARCHAR (50),
+@logId INT 
+AS
+BEGIN
+
+   IF(@ACTION = 'GETALLLOG')
+   BEGIN
+    SELECT * FROM EmployeeLogs
+   END
+
+   ELSE IF( @ACTION = 'GETLOGBYID' )
+   BEGIN
+     SELECT * FROM EmployeeLogs
+	 WHERE logId = @logId
+   END
+END
+GO
+USE [master]
+GO
+ALTER DATABASE [EmployeeManagement] SET  READ_WRITE 
+GO
